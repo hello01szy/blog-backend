@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://localhost:3306/blog?serverTimezone=GMT&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password: szy199601
+    driver-class-name: com.mysql.cj.jdbc.Driver
+server:
+  port: 8081
