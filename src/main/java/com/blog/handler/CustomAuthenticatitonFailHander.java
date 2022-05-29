@@ -2,6 +2,7 @@ package com.blog.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -34,6 +35,14 @@ public class CustomAuthenticatitonFailHander implements AuthenticationFailureHan
             Map<String, String> data = new HashMap<>();
             data.put("code", "5002");
             data.put("msg", "该账号已过期，请重置密码");
+            response.getWriter().write(mapper.writeValueAsString(data));
+        } else if (exception instanceof BadCredentialsException) {
+            response.setStatus(200);
+            response.setContentType("application/json;charset=UTF-8");
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, String> data = new HashMap<>();
+            data.put("code", "5003");
+            data.put("msg", "用户名或密码错误");
             response.getWriter().write(mapper.writeValueAsString(data));
         }
     }

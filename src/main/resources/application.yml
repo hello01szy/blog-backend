@@ -8,3 +8,8 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
 server:
   port: 8081
+
+jwt:
+  expire: 3600000
+  secret: szy*199601
+  encryptType: HS256
