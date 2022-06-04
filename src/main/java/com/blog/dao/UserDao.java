@@ -11,6 +11,4 @@ import java.util.List;
 public interface UserDao extends JpaRepository<User, Integer>{
     @Query(nativeQuery = true, value = "select * from user where nickname = :username")
     List<User> findUserByUsername(@Param("username") String username);
-//    @Query(nativeQuery = true, value = "select * from user")
-//    List<String> findAuthoritiesByUsername(@Param("username") String username);
 }
