@@ -1,4 +1,4 @@
-package com.blog.uttils;
+package com.blog.utils;
 
 import lombok.Builder;
 import lombok.Data;
@@ -13,5 +13,7 @@ public class Response {
         this.code = code;
         this.msg = msg;
         this.data = data;
+    }
+    public Response () {
     }
 }

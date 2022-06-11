@@ -1,10 +1,9 @@
-package com.blog.controller;
+package com.blog.controller.login;
 
 import com.blog.consistant.NetStatus;
-import com.blog.entity.User;
 import com.blog.entity.UserBasicInfo;
 import com.blog.service.UserInfoService;
-import com.blog.uttils.Response;
+import com.blog.utils.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

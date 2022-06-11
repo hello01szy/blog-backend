@@ -13,3 +13,10 @@ jwt:
   expire: 3600000
   secret: szy*199601
   encryptType: HS256
+
+file:
+  upload:
+    picPath: D:\projects\blogs\blog-backend\uploadImg
+    picBaseUrl: http://192.168.1.19:8081/uploadImg/
+    filePath: D:\projects\blogs\blog-backend\uploadFiles
+    fileBaseUrl: http://192.168.1.19:8081/uploadFile/

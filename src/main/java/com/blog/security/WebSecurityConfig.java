@@ -6,10 +6,11 @@ import com.blog.handler.CustomAuthenticationSuccessHandler;
 import com.blog.handler.CustomAuthenticatitonFailHander;
 import com.blog.handler.WebTokenLogoutSuccessHandler;
 import com.blog.security.service.impl.UserDetailsServiceImpl;
-import com.blog.uttils.JwtUtils;
+import com.blog.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -38,6 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/register/**").permitAll()
+                .antMatchers("/uploadImg/**", "/uploadFile/**").permitAll()
                 .anyRequest().authenticated();
         http.formLogin().disable();
         http.httpBasic().disable();
@@ -95,5 +97,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/uploadImg/**");
     }
 }
