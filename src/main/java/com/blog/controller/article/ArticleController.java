@@ -1,13 +1,13 @@
 package com.blog.controller.article;
 
 import com.blog.consistant.NetStatus;
+import com.blog.entity.BlogArticle;
+import com.blog.service.BlogArticleService;
 import com.blog.utils.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +15,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -25,6 +27,9 @@ public class ArticleController {
     /** 上传图片的url前缀 */
     @Value("${file.upload.picBaseUrl}")
     private String uploadBaseUrl;
+
+    @Autowired
+    BlogArticleService blogArticleService;
 
     @ResponseBody
     @PostMapping("/uploadArticleHeadCover")
@@ -61,5 +66,34 @@ public class ArticleController {
                     .build();
         }
         return response;
+    }
+
+    @PostMapping("/createArticle")
+    public Response createArticle(@RequestBody BlogArticle blogArticle) {
+        blogArticleService.insertArticle(blogArticle);
+        return Response
+                .builder()
+                .msg(NetStatus.SUCCESS.getMsg())
+                .code(NetStatus.SUCCESS.getCode())
+                .build();
+    }
+    @PostMapping("/getArticleById")
+    public Response getArticle(@RequestBody Map<String, String> param) {
+        BlogArticle article = blogArticleService.getArticleById(param.get("articleId"));
+        return Response.builder()
+                .msg(NetStatus.SUCCESS.getMsg())
+                .code(NetStatus.SUCCESS.getCode())
+                .data(article)
+                .build();
+    }
+    @GetMapping("/getAllArticles")
+    public Response getAllArticles() {
+        List<BlogArticle> articles = blogArticleService.getAllArticles();
+        return Response
+                .builder()
+                .msg(NetStatus.SUCCESS.getMsg())
+                .code(NetStatus.SUCCESS.getCode())
+                .data(articles)
+                .build();
     }
 }

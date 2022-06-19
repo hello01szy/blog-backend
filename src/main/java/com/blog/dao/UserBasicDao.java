@@ -1,6 +1,5 @@
 package com.blog.dao;
 
-import com.blog.entity.User;
 import com.blog.entity.UserBasicInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
