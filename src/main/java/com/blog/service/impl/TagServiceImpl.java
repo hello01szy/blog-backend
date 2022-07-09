@@ -5,6 +5,10 @@ import com.blog.dao.TagDao;
 import com.blog.entity.Tag;
 import com.blog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -28,7 +32,13 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<Tag> getAllTags() {
-        return tagDao.findAll();
+    public Page<Tag> getAllTags(Integer page, Integer pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return tagDao.findAll(pageable);
+    }
+
+    @Override
+    public void deleteTags(List<String> tags) {
+        tagDao.deleteAllById(tags);
     }
 }
