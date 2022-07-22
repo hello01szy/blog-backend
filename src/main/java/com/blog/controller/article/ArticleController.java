@@ -1,14 +1,15 @@
 package com.blog.controller.article;
 
 import com.blog.consistant.NetStatus;
-import com.blog.dto.TagDto;
+import com.blog.dto.BlogListDto;
 import com.blog.entity.BlogArticle;
+import com.blog.entity.BlogListWrapper;
+import com.blog.entity.BlogModel;
 import com.blog.service.BlogArticleService;
 import com.blog.utils.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -96,6 +97,25 @@ public class ArticleController {
                 .msg(NetStatus.SUCCESS.getMsg())
                 .code(NetStatus.SUCCESS.getCode())
                 .data(articles)
+                .build();
+    }
+    @PostMapping("/getArticleList")
+    public Response getArticleList(@RequestBody BlogListDto blogListDto) {
+        List<BlogModel> articles = blogArticleService.getArticleList(blogListDto.getAuthor(),
+                blogListDto.getPageNum(), blogListDto.getPageSize());
+        BlogListWrapper blogListWrapper = BlogListWrapper.builder().modelList(articles).count(articles.size()).build();
+        return Response.builder().msg(NetStatus.SUCCESS.getMsg())
+                .code(NetStatus.SUCCESS.getCode())
+                .data(blogListWrapper)
+                .build();
+    }
+    @PostMapping("/updateArticleById")
+    public Response updateArticleById(@RequestBody Map<String, String> param) {
+        BlogArticle article = blogArticleService.getArticleById(param.get("articleId"));
+        return Response.builder()
+                .msg(NetStatus.SUCCESS.getMsg())
+                .code(NetStatus.SUCCESS.getCode())
+                .data(article)
                 .build();
     }
 }

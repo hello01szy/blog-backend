@@ -20,7 +20,7 @@ public class BlogArticle {
     private String summary;
     @Column(name = "author")
     private String author;
-    @Column(name = "public")
+    @Column(name = "is_public")
     private String publicAttribute;
     @Column(name = "content")
     private String content;

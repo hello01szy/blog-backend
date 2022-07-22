@@ -18,4 +18,6 @@ public class Tag {
     private String name;
     @Column(name = "date")
     private String date;
+    @Column(name = "author")
+    private String author;
 }

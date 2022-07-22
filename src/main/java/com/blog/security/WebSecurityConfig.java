@@ -8,7 +8,6 @@ import com.blog.handler.WebTokenLogoutSuccessHandler;
 import com.blog.security.service.impl.UserDetailsServiceImpl;
 import com.blog.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -90,7 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081", "http://192.168.1.19:8080"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8081", "http://192.168.1.19:8080", "http://192.168.43.183:8080"));
         configuration.setAllowedMethods(Arrays.asList("*"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setMaxAge(Duration.ofHours(1));
