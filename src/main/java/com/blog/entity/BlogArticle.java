@@ -30,4 +30,6 @@ public class BlogArticle {
     private String publishDate;
     @Column(name = "publish_time")
     private String publishTime;
+    @Column(name = "draft")
+    private int draft;
 }

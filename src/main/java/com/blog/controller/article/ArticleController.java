@@ -2,6 +2,7 @@ package com.blog.controller.article;
 
 import com.blog.consistant.NetStatus;
 import com.blog.dto.BlogListDto;
+import com.blog.dto.SecretArticleDto;
 import com.blog.entity.BlogArticle;
 import com.blog.entity.BlogListWrapper;
 import com.blog.entity.BlogModel;
@@ -16,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +40,12 @@ public class ArticleController {
     @ResponseBody
     @PostMapping("/uploadArticleHeadCover")
     public Response uploadArticleHeadCover(@RequestParam("file")MultipartFile file, HttpServletRequest request) {
+        try {
+            uploadBaseUrl = uploadBaseUrl.replace("ip", getHostIp());
+        } catch (UnknownHostException e) {
+            log.error("can't get host ip");
+            return Response.builder().msg("图片上传失败").code(NetStatus.FILE_UPLOAD_FILED.getCode()).build();
+        }
         File filePath = new File(uploadPath);
         if (!filePath.exists() && !filePath.isDirectory()) {
             log.error("{}, the directory isn't exists", uploadPath);
@@ -103,7 +112,8 @@ public class ArticleController {
     public Response getArticleList(@RequestBody BlogListDto blogListDto) {
         List<BlogModel> articles = blogArticleService.getArticleList(blogListDto.getAuthor(),
                 blogListDto.getPageNum(), blogListDto.getPageSize());
-        BlogListWrapper blogListWrapper = BlogListWrapper.builder().modelList(articles).count(articles.size()).build();
+        int count = blogArticleService.getCountsOfArticles();
+        BlogListWrapper blogListWrapper = BlogListWrapper.builder().modelList(articles).count(count).build();
         return Response.builder().msg(NetStatus.SUCCESS.getMsg())
                 .code(NetStatus.SUCCESS.getCode())
                 .data(blogListWrapper)
@@ -117,5 +127,26 @@ public class ArticleController {
                 .code(NetStatus.SUCCESS.getCode())
                 .data(article)
                 .build();
+    }
+
+    @PostMapping("/deleteArticleById")
+    public Response deleteArticleById(@RequestBody List<String> ids) {
+        blogArticleService.deleteArticleById(ids);
+        return Response.builder().msg("删除成功！").code(NetStatus.SUCCESS.getCode()).build();
+    }
+
+    @PostMapping("/secretArticle")
+    public Response secretArticleById(@RequestBody SecretArticleDto secretArticleDto) {
+        blogArticleService.secretArticle(secretArticleDto);
+        return Response.builder().msg("设置成功！").code(NetStatus.SUCCESS.getCode()).build();
+    }
+
+    /**
+     * 获取本机ip地址
+     * @return ip地址字符串
+     */
+    private String getHostIp() throws UnknownHostException {
+        InetAddress address = InetAddress.getLocalHost();
+        return address.getHostAddress();
     }
 }

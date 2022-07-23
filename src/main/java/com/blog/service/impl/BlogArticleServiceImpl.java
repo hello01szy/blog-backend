@@ -4,6 +4,7 @@ import antlr.StringUtils;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.IdUtil;
 import com.blog.dao.BlogArticleDao;
+import com.blog.dto.SecretArticleDto;
 import com.blog.entity.BlogArticle;
 import com.blog.entity.BlogModel;
 import com.blog.service.BlogArticleService;
@@ -24,7 +25,6 @@ public class BlogArticleServiceImpl implements BlogArticleService {
     public void insertArticle(BlogArticle blogArticle) {
         if (blogArticle.getId() == null || "".equals(blogArticle.getId())) {
             blogArticle.setId(IdUtil.simpleUUID());
-            blogArticle.setPublicAttribute("1");
         }
         blogArticleDao.save(blogArticle);
     }
@@ -50,5 +50,20 @@ public class BlogArticleServiceImpl implements BlogArticleService {
             blogModels.add(blogModel);
         }
         return blogModels;
+    }
+
+    @Override
+    public int getCountsOfArticles() {
+        return (int) blogArticleDao.count();
+    }
+
+    @Override
+    public void deleteArticleById(List<String> ids) {
+        blogArticleDao.deleteAllById(ids);
+    }
+
+    @Override
+    public void secretArticle(SecretArticleDto secretArticleDto) {
+        blogArticleDao.secretArticle(secretArticleDto.getId(), secretArticleDto.getFlag());
     }
 }
